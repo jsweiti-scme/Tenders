@@ -1,0 +1,36 @@
+.page-item.active .page-link ,.btn-secondary ,.btn-custome , .btn-primary
+{
+    background-color:#527c26 !important;border-color:#527c26;color: #fff 
+}
+.page-item.active .page-link:hover ,.btn-secondary:hover ,.btn-custome:hover, .btn-primary:hover
+{
+    background-color:#6b8e45 !important;border-color:#6b8e45;color: #fff 
+}
+
+.btn
+{
+    color: #fff !important;
+}
+.left-col {
+    float: left;
+    width: 25%;
+}
+ 
+.center-col {
+    float: left;
+    width: 50%;
+}
+ 
+.right-col {
+    float: left;
+    width: 25%;
+}
+.left-col , .center-col , .right-col
+{
+    padding: 50px 0;
+}
+.selected 
+{
+    color: #fff !important;
+    background-color: #527c26;
+}
