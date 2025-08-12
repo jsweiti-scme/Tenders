@@ -3,6 +3,7 @@
         إضافة عضو
     </button>
 
+
     <div class="modal fade" id="addCommitteModal" tabindex="-1" aria-labelledby="addCommitteModalLabel" aria-hidden="true"
         wire:ignore.self>
         <div class="modal-dialog">

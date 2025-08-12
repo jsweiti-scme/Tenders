@@ -14,6 +14,7 @@
                         </tr>
                     </thead>
                     <tbody>
+
                         @foreach ($committes as $committe)
                             <tr>
                                 <td>{{ $committe->id }}</td>
