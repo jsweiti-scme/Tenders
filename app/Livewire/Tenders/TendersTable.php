@@ -29,7 +29,6 @@ class TendersTable extends Component
     public $selectedQuestions = [];
     public $questionAnswers = [];
     public $questionid = [];
-
     public $committeeTypeFilter = [];
 
 
@@ -65,7 +64,17 @@ class TendersTable extends Component
     public function updateCommittes($tenderId)
     {
         $tender = Tender::find($tenderId);
-        $tender->committes()->sync($this->selectedCommittes[$tenderId]);
+
+        $syncData = [];
+
+        foreach ($this->selectedCommittes[$tenderId] as $committeeId) {
+            $user = User::find($committeeId);
+            $committeeType = $user->type == 3 ? 'internal' : 'external';
+
+            $syncData[$committeeId] = ['committee_type' => $committeeType];
+        }
+
+        $tender->committes()->sync($syncData);
 
         $this->alert('success', trans('translation.update_success'));
     }
@@ -163,6 +172,11 @@ class TendersTable extends Component
     }
     public function delete(Tender $Tender)
     {
+        TenderCommitte::where('tender_id', $Tender->id)->delete();
+        TenderQuestion::where('tender_id', $Tender->id)->delete();
+
+
+        // Now delete the tender
         $Tender->delete();
 
         $this->alert('success', trans('translation.delete_success'));
