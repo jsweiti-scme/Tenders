@@ -82,17 +82,6 @@ class CommittesTable extends Component
         try {
             $committe = User::find($id);
 
-            if (!$committe) {
-                $this->alert('error', 'عضو اللجنة غير موجود');
-                return;
-            }
-
-            // Check if the user is actually a committee member (type 3 or 4)
-            if ($committe->type != 3 && $committe->type != 4) {
-                $this->alert('error', 'المستخدم ليس عضواً في اللجنة');
-                return;
-            }
-
             $activeTenders = TenderCommitte::where('user_id', $id)->count();
 
             if ($activeTenders > 0) {
