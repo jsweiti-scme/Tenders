@@ -46,7 +46,6 @@ class TendersTable extends Component
     public $selectedTenderItems = [];
     public $totalBidAmount = 0;
 
-    // إضافة هذا المتغير المفقود - غيرنا الاسم عشان ما يتداخل
     public $currentTenderQuestions = [];
 
     public function mount()
@@ -182,7 +181,6 @@ class TendersTable extends Component
         } else if (auth()->user()->type == 2) {
             $tenders = Tender::where('status', 1)->paginate(20);
 
-            // جلب جميع أسئلة العطاءات دفعة واحدة
             $tenderIds = $tenders->pluck('id')->toArray();
             $tenderQuestions = \DB::table('tender_questions')
                 ->whereIn('tender_id', $tenderIds)
@@ -350,10 +348,8 @@ class TendersTable extends Component
 
     public function loadTenderDetails($tenderId)
     {
-        // جلب العطاء مع الأسئلة والعلاقات
         $this->currentTender = Tender::with(['questions', 'questions.Answer'])->find($tenderId);
 
-        // باقي الكود يبقى كما هو...
         $this->tenderItems = TenderItem::where('tender_id', $tenderId)
             ->with('item')
             ->get()
@@ -367,10 +363,8 @@ class TendersTable extends Component
                 ];
             })->toArray();
 
-        // تحميل الأسئلة مباشرة من العطاء مع العلاقة Answer
         $this->currentTenderQuestions = $this->currentTender->questions->toArray();
 
-        // إعادة تعيين البنود المختارة
         $this->selectedTenderItems = [];
         $this->totalBidAmount = 0;
     }

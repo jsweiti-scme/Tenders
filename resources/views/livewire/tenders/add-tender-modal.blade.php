@@ -12,7 +12,6 @@
                 </div>
                 <div class="modal-body">
                     <form wire:submit.prevent="create">
-                        <!-- معلومات العطاء الأساسية -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h6 class="fw-bold text-primary mb-3">معلومات العطاء الأساسية</h6>
@@ -52,12 +51,10 @@
 
                         <hr>
 
-                        <!-- بنود العطاء -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h6 class="fw-bold text-primary mb-3">بنود العطاء</h6>
 
-                                <!-- أزرار إضافة البنود -->
                                 <div class="mb-3">
                                     <button type="button" class="btn btn-success me-2" wire:click="addNewItem">
                                         <i class="fas fa-plus"></i> إضافة بند جديد
@@ -68,7 +65,6 @@
                                     </button>
                                 </div>
 
-                                <!-- عرض البنود المضافة -->
                                 @if (count($selectedItems) > 0)
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
@@ -145,7 +141,6 @@
         </div>
     </div>
 
-    <!-- مودال اختيار البنود الموجودة -->
     <div class="modal fade" id="selectItemModal" tabindex="-1" aria-labelledby="selectItemModalLabel"
         aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-lg">
@@ -154,13 +149,11 @@
                     <h5 class="modal-title" id="selectItemModalLabel">اختيار البنود الموجودة</h5>
                 </div>
                 <div class="modal-body">
-                    <!-- البحث -->
                     <div class="mb-3">
                         <input type="text" class="form-control" wire:model="searchItems"
                             placeholder="البحث في البنود...">
                     </div>
 
-                    <!-- قائمة البنود -->
                     <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                         <table class="table table-hover">
                             <thead class="table-light sticky-top">

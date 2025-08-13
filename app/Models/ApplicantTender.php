@@ -30,13 +30,11 @@ class ApplicantTender extends Model
             ->where('tender_id', $this->tender_id);
     }
 
-    // العلاقة الجديدة مع بنود العطاء المسعرة
     public function applicantTenderItems()
     {
         return $this->hasMany(ApplicantTenderItem::class);
     }
 
-    // للحصول على إجمالي قيمة العرض
     public function getTotalBidAmountAttribute()
     {
         return $this->applicantTenderItems->sum(function ($item) {
