@@ -8,4 +8,39 @@ use Illuminate\Database\Eloquent\Model;
 class ApplicantTender extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'tender_id',
+        'user_id'
+    ];
+
+    public function tender()
+    {
+        return $this->belongsTo(Tender::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(ApplicantAnswer::class, 'user_id', 'user_id')
+            ->where('tender_id', $this->tender_id);
+    }
+
+    // العلاقة الجديدة مع بنود العطاء المسعرة
+    public function applicantTenderItems()
+    {
+        return $this->hasMany(ApplicantTenderItem::class);
+    }
+
+    // للحصول على إجمالي قيمة العرض
+    public function getTotalBidAmountAttribute()
+    {
+        return $this->applicantTenderItems->sum(function ($item) {
+            return $item->price * $item->tenderItem->quantity;
+        });
+    }
 }

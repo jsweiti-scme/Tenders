@@ -2,11 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ApplicantTenderItem extends Model
 {
-    protected $fillable = ['applicant_tender_id', 'tender_item_id', 'price'];
+    use HasFactory;
+
+    protected $fillable = [
+        'applicant_tender_id',
+        'tender_item_id',
+        'price'
+    ];
+
+    protected $casts = [
+        'price' => 'decimal:2'
+    ];
 
     public function applicantTender()
     {
@@ -16,5 +27,10 @@ class ApplicantTenderItem extends Model
     public function tenderItem()
     {
         return $this->belongsTo(TenderItem::class);
+    }
+
+    public function getTotalPriceAttribute()
+    {
+        return $this->price * $this->tenderItem->quantity;
     }
 }

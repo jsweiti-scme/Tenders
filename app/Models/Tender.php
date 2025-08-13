@@ -9,6 +9,10 @@ class Tender extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
     public function CreatedBy()
     {
         return $this->hasOne(User::class, 'id', 'created_by');

@@ -1,4 +1,5 @@
 <div>
+
     @include('livewire.tenders.add-tender-modal')
     <div class="card-body">
         <div class="table-rep-plugin">
@@ -28,6 +29,7 @@
                                 <td>{{ $tender->start_date }}</td>
                                 <td>{{ $tender->end_date }}</td>
                                 <td>{{ $tender->CreatedBy->name }}</td>
+
                                 @if ($tender->status == 0)
                                     <td>@include('livewire.tenders.tender-committes-modal', [
                                         'tender' => $tender,

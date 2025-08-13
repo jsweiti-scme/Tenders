@@ -1,9 +1,11 @@
 <div>
-    <button type="button" class="btn btn-custome" data-bs-toggle="modal" data-bs-target="#TenderQuestionModal{{ $tender->id }}">
+    <button type="button" class="btn btn-custome" data-bs-toggle="modal"
+        data-bs-target="#TenderQuestionModal{{ $tender->id }}">
         الاسئلة
     </button>
 
-    <div class="modal fade" id="TenderQuestionModal{{ $tender->id }}" tabindex="-1" aria-labelledby="TenderQuestionModalLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal fade" id="TenderQuestionModal{{ $tender->id }}" tabindex="-1"
+        aria-labelledby="TenderQuestionModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog" style="max-width: 60%;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -14,9 +16,11 @@
                         <div class="mb-3">
                             @foreach ($questions as $question)
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{ $question->id }}" id="question{{ $question->id }}" wire:model="selectedQuestions.{{ $tender->id }}">
+                                    <input class="form-check-input" type="checkbox" value="{{ $question->id }}"
+                                        id="question{{ $question->id }}"
+                                        wire:model="selectedQuestions.{{ $tender->id }}">
                                     <h6>{{ $question->title }}</h6>
-                                    <small>{{$question->description}}</small>
+                                    <small>{{ $question->description }}</small>
                                 </div>
                                 <hr>
                             @endforeach

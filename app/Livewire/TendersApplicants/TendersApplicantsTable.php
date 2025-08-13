@@ -23,20 +23,34 @@ class TendersApplicantsTable extends Component
     public function index($id)
     {
         $this->id = $id;
-        return view('livewire.tenders-applicants.index',compact('id'));
+        return view('livewire.tenders-applicants.index', compact('id'));
     }
     public function render()
     {
-        $applicants_ids = ApplicantTender::where('tender_id',$this->id)->pluck('user_id')->toArray();
-        $applicants = User::whereIn('id',$applicants_ids)->with('CompanyInfo')->with('applicantAnswers')->paginate(20);
-        $tender = Tender::find($this->id);
+        $tenderId = $this->id; // خزن قيمة id في متغير محلي
 
-        return view('livewire.tenders-applicants.tenders-applicants-table',compact('applicants','tender'));
+        $applicants_ids = ApplicantTender::where('tender_id', $tenderId)->pluck('user_id')->toArray();
+
+        $applicants = User::whereIn('id', $applicants_ids)
+            ->with('CompanyInfo')
+            ->with(['applicantAnswers.question.Answer'])
+            ->with(['applicantTenderItems' => function ($query) use ($tenderId) {
+                $query->whereHas('applicantTender', function ($q) use ($tenderId) {
+                    $q->where('tender_id', $tenderId);
+                })->with('tenderItem.item');
+            }])
+            ->paginate(20);
+
+        $tender = Tender::find($tenderId);
+        return view('livewire.tenders-applicants.tenders-applicants-table', compact('applicants', 'tender'));
     }
+
+
+
 
     public function SetWinner($winner_id)
     {
-        Tender::where('id',$this->id)->update(['winner_id' => $winner_id]);
-        $this->alert('success', "تم ارساء العطاء بنجاح");  
+        Tender::where('id', $this->id)->update(['winner_id' => $winner_id]);
+        $this->alert('success', "تم ارساء العطاء بنجاح");
     }
 }

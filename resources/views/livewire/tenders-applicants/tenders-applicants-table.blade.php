@@ -22,17 +22,19 @@
                                 <td>{{ $applicant->CompanyInfo->company_name }}</td>
                                 <td>{{ $applicant->CompanyInfo->mobile_number }}</td>
                                 <td>{{ $applicant->CompanyInfo->phone_number }}</td>
-                                <td>{{ $applicant->CompanyInfo->City->city}} - {{$applicant->CompanyInfo->address}}</td>
+                                <td>{{ $applicant->CompanyInfo->City->city }} - {{ $applicant->CompanyInfo->address }}
+                                </td>
                                 <td>{{ $applicant->CompanyInfo->license_worker_number }}</td>
                                 <td>@include('livewire.tenders-applicants.applicant-details')</td>
                                 <td>
                                     @if (auth()->user()->type == 1 && $tender->winner_id == null)
-                                        <button wire:click="SetWinner({{ $applicant->id }})"
-                                            class="btn btn-custome" wire:confirm="هل انت متأكد من ارساء العطاء على هذه الشركة ؟ لا يمكن تغيير الحالة فيما بعد">ارساء العطاء</button>
+                                        <button wire:click="SetWinner({{ $applicant->id }})" class="btn btn-custome"
+                                            wire:confirm="هل انت متأكد من ارساء العطاء على هذه الشركة ؟ لا يمكن تغيير الحالة فيما بعد">ارساء
+                                            العطاء</button>
                                     @elseif($tender->winner_id == null)
-                                     لم يتم ارساء العطاء
-                                     @elseif($applicant->id == $tender->winner_id)
-                                     تم الارساء
+                                        لم يتم ارساء العطاء
+                                    @elseif($applicant->id == $tender->winner_id)
+                                        تم الارساء
                                     @endif
                                 </td>
                             </tr>
@@ -40,7 +42,7 @@
                     </tbody>
                 </table>
             </div>
-            {{$applicants->links()}}
+            {{ $applicants->links() }}
         </div>
     </div>
 </div>

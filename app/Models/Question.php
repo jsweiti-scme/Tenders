@@ -11,7 +11,7 @@ class Question extends Model
 
     public function TenderQuestions()
     {
-        return $this->belongsToMany(User::class,'tender_questions','tender_id','question_id');
+        return $this->belongsToMany(User::class, 'tender_questions', 'tender_id', 'question_id');
     }
 
     public function applicantAnswers()
@@ -21,7 +21,15 @@ class Question extends Model
 
     public function Answer()
     {
-        return $this->hasOne(AnswerType::class,'id','answer_type_id');
+        return $this->hasOne(AnswerType::class, 'id', 'answer_type_id');
     }
-
+    public function tenders()
+    {
+        return $this->belongsToMany(
+            Tender::class,
+            'tender_questions',
+            'question_id',
+            'tender_id'
+        );
+    }
 }

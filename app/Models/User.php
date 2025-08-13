@@ -58,17 +58,33 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function TenderCommittes()
     {
-        return $this->belongsToMany(User::class,'tender_committes','tender_id','user_id')->withPivot('approval');;
+        return $this->belongsToMany(User::class, 'tender_committes', 'tender_id', 'user_id')->withPivot('approval');;
     }
 
     public function TenderApplicants()
     {
-        return $this->belongsToMany(User::class,'applicant_tenders','tender_id','user_id')->withPivot('approval');
+        return $this->belongsToMany(User::class, 'applicant_tenders', 'tender_id', 'user_id')->withPivot('approval');
     }
 
     public function applicantAnswers()
     {
         return $this->hasMany(ApplicantAnswer::class, 'user_id');
     }
-    
+
+    public function applicantTenders()
+    {
+        return $this->hasMany(ApplicantTender::class, 'user_id');
+    }
+
+    public function applicantTenderItems()
+    {
+        return $this->hasManyThrough(
+            ApplicantTenderItem::class,   // الجدول النهائي
+            ApplicantTender::class,       // الجدول الوسيط
+            'user_id',                    // foreign key في الجدول الوسيط (applicant_tenders)
+            'applicant_tender_id',        // foreign key في الجدول النهائي (applicant_tender_items)
+            'id',                         // local key في User
+            'id'                          // local key في ApplicantTender
+        );
+    }
 }
