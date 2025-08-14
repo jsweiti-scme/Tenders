@@ -41,4 +41,11 @@ class ApplicantTender extends Model
             return $item->price * $item->tenderItem->quantity;
         });
     }
+
+    public function itemsWithDetails()
+    {
+        return $this->applicantTenderItems()
+            ->with(['tenderItem.item'])
+            ->get();
+    }
 }

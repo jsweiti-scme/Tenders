@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TenderItem extends Model
 {
-    protected $fillable = ['tender_id', 'item_name', 'quantity', 'unit'];
+    protected $fillable = ['tender_id', 'item_name', 'quantity', 'unit', 'award_status'];
 
     public function tender()
     {
@@ -21,5 +21,42 @@ class TenderItem extends Model
     public function item()
     {
         return $this->belongsTo(Item::class);
+    }
+    public function award()
+    {
+        return $this->hasOne(TenderItemAward::class);
+    }
+
+    public function applicantItems()
+    {
+        return $this->hasMany(ApplicantTenderItem::class);
+    }
+
+    // دوال مساعدة
+    public function isAwarded()
+    {
+        return $this->award_status === 'awarded';
+    }
+
+    public function getLowestBid()
+    {
+        return $this->applicantItems()
+            ->orderBy('price', 'asc')
+            ->first();
+    }
+
+    public function getBidsWithCompanies()
+    {
+        return $this->applicantItems()
+            ->with([
+                'applicantTender.user.companyInfo'
+            ])
+            ->orderBy('price', 'asc')
+            ->get();
+    }
+
+    public function getBidsCount()
+    {
+        return $this->applicantItems()->count();
     }
 }

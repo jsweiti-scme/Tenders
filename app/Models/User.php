@@ -87,4 +87,35 @@ class User extends Authenticatable implements MustVerifyEmail
             'id'                          // local key في ApplicantTender
         );
     }
+
+    public function wonItemAwards()
+    {
+        return $this->hasMany(TenderItemAward::class, 'winner_user_id');
+    }
+
+    public function wonTenders()
+    {
+        return $this->hasMany(Tender::class, 'winner_id');
+    }
+
+    // دوال مساعدة
+    public function isCompany()
+    {
+        return $this->type == 2;
+    }
+
+    public function isAdmin()
+    {
+        return $this->type == 1;
+    }
+
+    public function getWonTendersCount()
+    {
+        return $this->wonItemAwards()->distinct('tender_id')->count();
+    }
+
+    public function getTotalWonAmount()
+    {
+        return $this->wonItemAwards()->sum('awarded_price');
+    }
 }
