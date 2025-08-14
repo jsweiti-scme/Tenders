@@ -27,19 +27,27 @@ class TendersApplicantsTable extends Component
     }
     public function render()
     {
-        $tenderId = $this->id; // خزن قيمة id في متغير محلي
+        $tenderId = $this->id;
 
         $applicants_ids = ApplicantTender::where('tender_id', $tenderId)->pluck('user_id')->toArray();
 
         $applicants = User::whereIn('id', $applicants_ids)
             ->with('CompanyInfo')
-            ->with(['applicantAnswers.question.Answer'])
-            ->with(['applicantTenderItems' => function ($query) use ($tenderId) {
-                $query->whereHas('applicantTender', function ($q) use ($tenderId) {
-                    $q->where('tender_id', $tenderId);
-                })->with('tenderItem.item');
-            }])
+            ->with([
+                'applicantAnswers' => function ($query) use ($tenderId) {
+                    $query->where('tender_id', $tenderId)
+                        ->with('question.Answer');
+                }
+            ])
+            ->with([
+                'applicantTenderItems' => function ($query) use ($tenderId) {
+                    $query->whereHas('applicantTender', function ($q) use ($tenderId) {
+                        $q->where('tender_id', $tenderId);
+                    })->with('tenderItem.item');
+                }
+            ])
             ->paginate(20);
+
 
         $tender = Tender::find($tenderId);
         return view('livewire.tenders-applicants.tenders-applicants-table', compact('applicants', 'tender'));
