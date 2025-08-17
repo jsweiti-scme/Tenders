@@ -68,14 +68,12 @@ class TendersApplicantsTable extends Component
         return view('livewire.tenders-applicants.tenders-applicants-table', compact('applicants', 'tender'));
     }
 
-    // إرساء كامل للعطاء
     public function SetWinner($winner_id)
     {
         Tender::where('id', $this->id)->update(['winner_id' => $winner_id]);
         $this->alert('success', "تم ارساء العطاء بنجاح");
     }
 
-    // إرساء عنصر معين (جزئي)
     public function awardItem($tenderItemId, $applicantTenderItemId)
     {
         $tenderItem = TenderItem::find($tenderItemId);
@@ -116,7 +114,6 @@ class TendersApplicantsTable extends Component
         }
     }
 
-    // إلغاء إرساء عنصر
     public function cancelItemAward($tenderItemId)
     {
         $tenderItem = TenderItem::find($tenderItemId);

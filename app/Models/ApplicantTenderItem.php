@@ -39,7 +39,6 @@ class ApplicantTenderItem extends Model
         return $this->hasOne(TenderItemAward::class);
     }
 
-    // الحصول على معلومات الشركة
     public function getCompanyInfo()
     {
         return $this->applicantTender->user->companyInfo ?? null;

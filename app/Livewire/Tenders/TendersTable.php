@@ -216,7 +216,7 @@ class TendersTable extends Component
             });
 
             return view('livewire.tenders.company-tender-table', compact('tenders'));
-        } else if (auth()->user()->type == 3) {
+        } else if (auth()->user()->type == 3 || auth()->user()->type == 4) {
 
             $tenders_id = TenderCommitte::where('user_id', auth()->user()->id)->pluck('tender_id')->toArray();
 
@@ -227,7 +227,17 @@ class TendersTable extends Component
                     ->where('approval', 1)
                     ->count();
                 $totalCount = TenderCommitte::where('tender_id', $tender->id)->count();
-                $tender->is_can_open = ($tender->end_date <= Carbon::now() || $tender->status == 4 && $approvalCount === $totalCount);
+
+                $tender->is_fully_approved = $approvalCount === $totalCount;
+
+                // العضو الحالي هل وافق؟
+                $tender->current_user_approved = TenderCommitte::where('tender_id', $tender->id)
+                    ->where('user_id', auth()->id())
+                    ->value('approval') == 1;
+
+                // شرط فتح العطاء
+                $tender->is_can_open = ($tender->end_date <= Carbon::now() || $tender->status == 4)
+                    && $tender->is_fully_approved;
             }
 
             return view('livewire.tenders.committes-tender-table', compact('tenders'));

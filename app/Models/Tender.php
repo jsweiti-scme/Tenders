@@ -31,7 +31,6 @@ class Tender extends Model
     {
         return $this->hasOne(User::class, 'id', 'created_by');
     }
-    // ============= العلاقات الأساسية =============
 
     /**
      * العناصر المرتبطة بالعطاء
@@ -91,7 +90,6 @@ class Tender extends Model
         return $this->belongsTo(User::class, 'winner_id');
     }
 
-    // ============= العلاقات المعقدة =============
 
     /**
      * المتقدمين للعطاء
@@ -121,7 +119,6 @@ class Tender extends Model
             ->withTimestamps();
     }
 
-    // ============= الخصائص المحسوبة (Attributes) =============
 
     /**
      * نسبة تقدم الإرساء
@@ -135,7 +132,6 @@ class Tender extends Model
         return round(($awardedItems / $totalItems) * 100, 2);
     }
 
-    // ============= الدوال المساعدة =============
 
     /**
      * التحقق من اكتمال إرساء جميع العناصر

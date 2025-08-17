@@ -32,7 +32,6 @@ class TenderItem extends Model
         return $this->hasMany(ApplicantTenderItem::class);
     }
 
-    // دوال مساعدة
     public function isAwarded()
     {
         return $this->award_status === 'awarded';

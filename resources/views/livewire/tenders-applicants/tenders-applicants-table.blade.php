@@ -1,6 +1,5 @@
 <div>
     <div class="card-body">
-        <!-- معلومات العطاء العامة -->
         <div class="row mb-4">
             <div class="col-md-8">
                 <div class="alert alert-light border-primary">
@@ -52,7 +51,6 @@
             </div>
         </div>
 
-        <!-- جدول العناصر والإرساءات -->
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
                 <thead class="table-light">
@@ -81,7 +79,15 @@
                                 @if ($bids->count() > 0)
                                     <div class="bids-container">
                                         @foreach ($bids as $index => $bid)
-                                            <div class="mb-2 p-2 border rounded">
+                                            @php
+                                                $isWinner =
+                                                    $tenderItem->award &&
+                                                    $tenderItem->award->winner_user_id ==
+                                                        $bid->applicantTender->user_id;
+                                            @endphp
+
+                                            <div
+                                                class="mb-2 p-2 border rounded {{ $isWinner ? 'bg-success-subtle' : '' }}">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <div>
                                                         <strong>{{ $bid->applicantTender->user->companyInfo->company_name ?? 'غير محدد' }}</strong>
@@ -90,6 +96,9 @@
                                                             ₪</span>
                                                         @if ($index == 0)
                                                             <small class="text-primary">(أقل سعر)</small>
+                                                        @endif
+                                                        @if ($isWinner)
+                                                            <span class="badge bg-success">الفائز</span>
                                                         @endif
                                                     </div>
                                                     @if (auth()->user()->type == 1 && !$tenderItem->isAwarded() && $tender->winner_id == null)

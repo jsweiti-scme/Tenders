@@ -1,5 +1,5 @@
 <div>
-   <div class="card-body">
+    <div class="card-body">
         <div class="table-rep-plugin">
             <div class="table-responsive mb-0" data-pattern="priority-columns">
                 <table id="datatable" class="table table-bordered">
@@ -27,50 +27,54 @@
                                 <td>{{ $tender->CreatedBy->name }}</td>
                                 <td>
                                     @if ($tender->status == 4 || $tender->end_date <= Carbon\Carbon::now())
-                                    <span style="color: red">مُنتهي</span>
+                                        <span style="color: red">مُنتهي</span>
                                     @elseif ($tender->status == 0)
-                                    مسودة
+                                        مسودة
                                     @elseif ($tender->status == 1)
-                                    <span style="color: green">منشور</span>
+                                        <span style="color: green">منشور</span>
                                     @elseif ($tender->status == 2)
-                                    <span style="color: red">ملغي</span>
+                                        <span style="color: red">ملغي</span>
                                     @elseif ($tender->status == 3)
-                                    <span style="color: red">مغلق</span>
+                                        <span style="color: red">مغلق</span>
                                     @endif
                                 </td>
-                                @if ($tender->committes->first()->pivot->approval == 1)
-                                <td>
-                                    <button disabled wire:click="CommittesApprove({{ $tender->id }})"
-                                        class="btn btn-custome">تمت الموافقة</button>
-
-                                </td>
-                                <td>
-                                    @if ($tender->is_can_open)
-                                    <a wire:key="id-{{ $tender->id }}" href="{{ route('TenderApplicants.index', ['id' => $tender->id]) }}" >
-                                        <span data-key="t-specializations" class="btn btn-custome">المتقدمين</span>
-                                    </a>
-                                    @endif
-                                </td>
-                                @elseif($tender->status == 0)
+                                @if ($tender->is_fully_approved)
                                     <td>
-                                        <button disabled class="btn btn-custome">العطاء غير منشور</button>
+                                        <button disabled class="btn btn-custome">تمت الموافقة من جميع اللجان</button>
                                     </td>
-                                @elseif ($tender->committes->first()->pivot->approval != 1 && $tender->status == 4 || $tender->end_date <= Carbon\Carbon::now())
+                                    <td>
+                                        @if ($tender->is_can_open)
+                                            <a href="{{ route('TenderApplicants.index', ['id' => $tender->id]) }}">
+                                                <span class="btn btn-custome">المتقدمين</span>
+                                            </a>
+                                        @endif
+                                    </td>
+                                @elseif ($tender->current_user_approved)
+                                    <td>
+                                        <button disabled class="btn btn-custome">تمت موافقتك، بانتظار باقي
+                                            اللجان</button>
+                                    </td>
+                                @elseif ($tender->status == 4 || $tender->end_date <= Carbon\Carbon::now())
                                     <td>
                                         <button wire:click="CommittesApprove({{ $tender->id }})"
-                                            class="btn btn-custome" wire:confirm="هل انت متأكد من الموافقة على فتح هذا العطاء ؟ لا يمكن تغيير الحالة فيما بعد">الموافقة</button>
+                                            class="btn btn-custome"
+                                            wire:confirm="هل انت متأكد من الموافقة على فتح هذا العطاء ؟ لا يمكن تغيير الحالة فيما بعد">
+                                            موافقة لجنتي
+                                        </button>
                                     </td>
                                 @else
                                     <td>
                                         <button disabled class="btn btn-custome">العطاء لازال مفتوحاً</button>
                                     </td>
                                 @endif
+
+
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            {{$tenders->links()}}
+            {{ $tenders->links() }}
         </div>
     </div>
 </div>
